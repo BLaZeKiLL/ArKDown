@@ -73,6 +73,5 @@ void AGun::OnFire()
 void AGun::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
-
 }
 

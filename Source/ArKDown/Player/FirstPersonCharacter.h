@@ -45,9 +45,6 @@ public:
 		TSubclassOf<class AGun> GunBlueprint;
 
 protected:
-	
-	/** Resets HMD orientation and position in VR. */
-	void OnResetVR();
 
 	/** Handles moving forward/backward */
 	void MoveForward(float Val);
