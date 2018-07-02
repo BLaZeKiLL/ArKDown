@@ -33,6 +33,16 @@ AMannequin::AMannequin()
 
 }
 
+void AMannequin::UnPossessed()
+{
+	// when dead
+	Super::UnPossessed();
+	if (Gun)
+	{
+		Gun->AttachToComponent(GetMesh(), FAttachmentTransformRules(EAttachmentRule::SnapToTarget, true), TEXT("GripPoint"));
+	}
+}
+
 // Called when the game starts or when spawned
 void AMannequin::BeginPlay()
 {
@@ -41,10 +51,22 @@ void AMannequin::BeginPlay()
 	if (!ensure(GunBlueprint)) { return; }
 
 	Gun = GetWorld()->SpawnActor<AGun>(GunBlueprint);
-	Gun->AttachToComponent(Mesh1P, FAttachmentTransformRules(EAttachmentRule::SnapToTarget, true), TEXT("GripPoint"));
-	Gun->AnimInstance = Mesh1P->GetAnimInstance();
 
-	// Only Player gets the inputComponent and AI does't so to prevent crash
+	if (IsPlayerControlled())
+	{
+		// First Person
+		Gun->AttachToComponent(Mesh1P, FAttachmentTransformRules(EAttachmentRule::SnapToTarget, true), TEXT("GripPoint"));
+	}
+	else
+	{
+		// Second Person
+		Gun->AttachToComponent(GetMesh(), FAttachmentTransformRules(EAttachmentRule::SnapToTarget, true), TEXT("GripPoint"));
+	}
+
+	Gun->TP_AnimInstance = GetMesh()->GetAnimInstance();
+	Gun->FP_AnimInstance = Mesh1P->GetAnimInstance();
+
+	// Only Player gets the inputComponent and AI doesn't so to prevent crash
 	if (InputComponent) 
 	{
 		// Binding here rather than SetupPlayerInputComponent() as SetupPlayerInputComponent() is called 

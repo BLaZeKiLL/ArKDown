@@ -31,12 +31,20 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Gameplay)
 		class USoundBase* FireSound;
 
-	/** AnimMontage to play each time we fire */
+	/** AnimMontage to play each time we fire as a player */
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Gameplay)
-		class UAnimMontage* FireAnimation;
+		class UAnimMontage* FP_FireAnimation;
+
+	/** AnimMontage to play each time we fire as an enemy */
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Gameplay)
+		class UAnimMontage* TP_FireAnimation;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Gameplay)
-		class UAnimInstance* AnimInstance;
+		class UAnimInstance* FP_AnimInstance;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Gameplay)
+		class UAnimInstance* TP_AnimInstance;
+
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
