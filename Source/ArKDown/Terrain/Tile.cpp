@@ -2,6 +2,7 @@
 
 #include "Tile.h"
 #include "DrawDebugHelpers.h"
+#include "ActorPool.h"
 
 
 // Sets default values
@@ -40,6 +41,25 @@ void ATile::PlaceActors(TSubclassOf<AActor> ToSpawn, int MinSpawn, int MaxSpawn,
 			SpawnActor(ToSpawn, SpawnPoint, RandomRodation, RandomScale);
 		}
 	}
+}
+
+void ATile::SetPool(UActorPool* Pool)
+{
+	this->Pool = Pool;
+
+	PositionNavMeshBoundsVoulme(Pool);
+}
+
+void ATile::PositionNavMeshBoundsVoulme(UActorPool* Pool)
+{
+	NavMeshBoundsVolume = Pool->Checkout();
+	if (!NavMeshBoundsVolume)
+	{
+		UE_LOG(LogTemp, Warning, TEXT("Pool Empty"));
+		return;
+	}
+	UE_LOG(LogTemp, Warning, TEXT("poisitioning"));
+	NavMeshBoundsVolume->SetActorLocation(GetActorLocation());
 }
 
 bool ATile::CanSpawnAtLocation(FVector Location, float Radius)
@@ -98,5 +118,10 @@ void ATile::SpawnActor(TSubclassOf<AActor> ToSpawn, FVector SpawnPoint, float Ro
 	Spawned->AttachToActor(this, FAttachmentTransformRules(EAttachmentRule::KeepRelative, false));
 	Spawned->SetActorRotation(FRotator(0,Rotation,0));
 	Spawned->SetActorScale3D(FVector(Scale));
+}
+
+void ATile::EndPlay(const EEndPlayReason::Type EndPlayReason)
+{
+	Pool->Return(NavMeshBoundsVolume);
 }
 

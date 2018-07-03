@@ -6,6 +6,8 @@
 #include "GameFramework/Actor.h"
 #include "Tile.generated.h"
 
+class UActorPool;
+
 UCLASS()
 class ARKDOWN_API ATile : public AActor
 {
@@ -25,7 +27,14 @@ public:
 
 	UFUNCTION(BlueprintCallable, Category = "Generation")
 		void PlaceActors(TSubclassOf<AActor> ToSpawn, int MinSpawn = 1, int MaxSpawn = 1, float Radius = 500.0f, float MinScale = 1.f, float MaxScale = 1.f);
-	
+
+	UFUNCTION(BlueprintCallable, Category = "Pool")
+		void SetPool(UActorPool* Pool);
+
+	void PositionNavMeshBoundsVoulme(UActorPool* Pool);
+
+	void EndPlay(const EEndPlayReason::Type EndPlayReason) override;
+
 private:
 
 	bool CanSpawnAtLocation(FVector Location, float Radius);
@@ -33,4 +42,8 @@ private:
 	bool FindEmptySpawnPoint(FVector& OutLocation, float Radius);
 
 	void SpawnActor(TSubclassOf<AActor> ToSpawn, FVector SpawnPoint, float Rotation, float Scale);
+
+	UActorPool* Pool;
+
+	AActor* NavMeshBoundsVolume;
 };
