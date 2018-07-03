@@ -3,6 +3,7 @@
 #include "Gun.h"
 #include "Animation/AnimInstance.h"
 #include "BallProjectile.h"
+#include "Perception/AISense_Hearing.h"
 #include "Kismet/GameplayStatics.h"
 
 
@@ -68,6 +69,8 @@ void AGun::OnFire()
 	{
 		TP_AnimInstance->Montage_Play(TP_FireAnimation, 1.f);
 	}
+
+	//UAISense_Hearing::ReportNoiseEvent(this, GetActorLocation());
 }
 
 // Called every frame

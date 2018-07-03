@@ -24,7 +24,7 @@ public:
 	virtual void Tick(float DeltaTime) override;
 
 	UFUNCTION(BlueprintCallable, Category = "Generation")
-		void PlaceActors(TSubclassOf<AActor> ToSpawn, int MinSpawn = 1, int MaxSpawn = 1, float Radius = 500.0f);
+		void PlaceActors(TSubclassOf<AActor> ToSpawn, int MinSpawn = 1, int MaxSpawn = 1, float Radius = 500.0f, float MinScale = 1.f, float MaxScale = 1.f);
 	
 private:
 
@@ -32,5 +32,5 @@ private:
 
 	bool FindEmptySpawnPoint(FVector& OutLocation, float Radius);
 
-	void SpawnActor(TSubclassOf<AActor> ToSpawn, FVector SpawnPoint);
+	void SpawnActor(TSubclassOf<AActor> ToSpawn, FVector SpawnPoint, float Rotation, float Scale);
 };
