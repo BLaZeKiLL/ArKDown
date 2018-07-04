@@ -19,7 +19,6 @@ AActor* UActorPool::Checkout()
 	{
 		return nullptr;
 	}
-	UE_LOG(LogTemp, Warning, TEXT("Item checked out"));
 	return Pool.Pop();
 }
 
@@ -32,10 +31,8 @@ void UActorPool::Add(AActor* ActorToAdd)
 {
 	if (!ActorToAdd)
 	{
-		UE_LOG(LogTemp, Warning, TEXT("null added"));
 		return;
 	}
 	Pool.Push(ActorToAdd);
-	UE_LOG(LogTemp, Warning, TEXT("Item added"));
 }
 

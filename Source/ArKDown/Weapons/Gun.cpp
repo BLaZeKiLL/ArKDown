@@ -5,6 +5,7 @@
 #include "BallProjectile.h"
 #include "Perception/AISense_Hearing.h"
 #include "Kismet/GameplayStatics.h"
+#include "Engine/World.h"
 
 
 // Sets default values
