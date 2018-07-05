@@ -111,7 +111,7 @@ bool ATile::FindEmptySpawnPoint(FVector& OutLocation, float Radius)
 	FVector max(4000, 2000, 0);
 	FBox Bounds(min, max);
 
-	const int MAX_ATTEMPTS = 100;
+	const int MAX_ATTEMPTS = 5;
 	for (int i = 0; i < MAX_ATTEMPTS; i++)
 	{
 		FVector CandidatePoint = FMath::RandPointInBox(Bounds);
@@ -127,30 +127,47 @@ bool ATile::FindEmptySpawnPoint(FVector& OutLocation, float Radius)
 
 void ATile::SpawnActor(TSubclassOf<AActor> ToSpawn, const FSpawnPosition& SpawnPosition)
 {
-	AActor* Spawned = GetWorld()->SpawnActor<AActor>(ToSpawn);
+	FRotator Rotation = FRotator(0, SpawnPosition.Rotation, 0);
+	AActor* Spawned = GetWorld()->SpawnActor<AActor>(ToSpawn, SpawnPosition.SpawnPoint, Rotation);
 	if (!Spawned) { return; }
 
-	Spawned->SetActorRelativeLocation(SpawnPosition.SpawnPoint);
+	Props.Add(Spawned);
 	Spawned->AttachToActor(this, FAttachmentTransformRules(EAttachmentRule::KeepRelative, false));
-	Spawned->SetActorRotation(FRotator(0, SpawnPosition.Rotation,0));
 	Spawned->SetActorScale3D(FVector(SpawnPosition.Scale));
 }
 
 void ATile::SpawnActor(TSubclassOf<APawn> ToSpawn, const FSpawnPosition& SpawnPosition)
 {
-	APawn* Spawned = GetWorld()->SpawnActor<APawn>(ToSpawn);
+	FRotator Rotation = FRotator(0, SpawnPosition.Rotation, 0);
+	APawn* Spawned = GetWorld()->SpawnActor<APawn>(ToSpawn, SpawnPosition.SpawnPoint, Rotation);
 	if (!Spawned) { return; }
 
-	Spawned->SetActorRelativeLocation(SpawnPosition.SpawnPoint);
+	Enemies.Add(Spawned);
 	Spawned->AttachToActor(this, FAttachmentTransformRules(EAttachmentRule::KeepRelative, false));
-	Spawned->SetActorRotation(FRotator(0, SpawnPosition.Rotation, 0));
 	Spawned->SpawnDefaultController();
 	Spawned->Tags.Add(FName("Enemy"));
-
 }
 
 void ATile::EndPlay(const EEndPlayReason::Type EndPlayReason)
 {
-	Pool->Return(NavMeshBoundsVolume);
+	if (Pool != nullptr && NavMeshBoundsVolume != nullptr)
+	{
+		Pool->Return(NavMeshBoundsVolume);
+	}
+
+	AActor* Prop;
+	APawn* Enemy;
+
+	while (Props.Num() != 0)
+	{
+		Prop = Props.Pop();
+		Prop->Destroy();
+	}
+
+	while (Enemies.Num() != 0)
+	{
+		Enemy = Enemies.Pop();
+		Enemy->Destroy();
+	}
 }
 

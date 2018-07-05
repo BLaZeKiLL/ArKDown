@@ -33,6 +33,11 @@ AMannequin::AMannequin()
 
 }
 
+void AMannequin::EndPlay(const EEndPlayReason::Type EndPlayReason)
+{
+	Gun->Destroy();
+}
+
 void AMannequin::UnPossessed()
 {
 	// when dead

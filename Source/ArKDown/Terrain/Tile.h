@@ -7,6 +7,7 @@
 #include "Tile.generated.h"
 
 class UActorPool;
+class UHierarchicalInstancedStaticMeshComponent;
 
 USTRUCT()
 struct FSpawnPosition
@@ -17,6 +18,7 @@ struct FSpawnPosition
 	float Rotation;
 	float Scale;
 };
+
 
 UCLASS()
 class ARKDOWN_API ATile : public AActor
@@ -67,6 +69,9 @@ private:
 	UActorPool* Pool;
 
 	AActor* NavMeshBoundsVolume;
+
+	TArray<AActor*> Props;
+	TArray<APawn*> Enemies;
 };
 
 
