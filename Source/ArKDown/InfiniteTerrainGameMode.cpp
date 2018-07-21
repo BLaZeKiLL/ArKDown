@@ -1,7 +1,7 @@
 // Property of DALAL
 
 #include "InfiniteTerrainGameMode.h"
-#include "AI/Navigation/NavMeshBoundsVolume.h"
+#include "NavigationSystem/Public/NavMesh/NavMeshBoundsVolume.h"
 #include "EngineUtils.h"
 #include "ActorPool.h"
 

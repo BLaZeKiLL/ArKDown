@@ -15,7 +15,8 @@ public class ArKDown : ModuleRules
             "CoreUObject",
             "Engine",
             "InputCore",
-            "HeadMountedDisplay"
+            "HeadMountedDisplay",
+            "NavigationSystem"
         });
 
 

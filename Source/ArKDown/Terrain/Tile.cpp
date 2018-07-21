@@ -3,7 +3,7 @@
 #include "Tile.h"
 #include "DrawDebugHelpers.h"
 #include "ActorPool.h"
-#include "AI/Navigation/NavigationSystem.h"
+#include "NavigationSystem/Public/NavigationSystem.h"
 #include "Engine/World.h"
 
 // Sets default values
@@ -73,7 +73,8 @@ void ATile::PositionNavMeshBoundsVoulme(UActorPool* Pool)
 		return;
 	}
 	NavMeshBoundsVolume->SetActorLocation(GetActorLocation() + NavigationBoundsOffset);
-	GetWorld()->GetNavigationSystem()->Build();
+	// FNavigationSystem::GetCurrent(GetWorld)->Build();
+	UNavigationSystemV1::GetNavigationSystem(GetWorld())->Build();
 }
 
 bool ATile::CanSpawnAtLocation(FVector Location, float Radius)
